@@ -1,5 +1,6 @@
 package rentalService;
 
+import org.springframework.beans.BeanUtils;
 import rentalService.config.kafka.KafkaProcessor;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,8 +25,9 @@ public class PolicyHandler{
     public void wheneverProductSaved_Product(@Payload ProductSaved productSaved){
 
         if(productSaved.isMe()){
-            Optional<Product> productOptional = ProductRepository.findById(productSaved.getId());
-            Product product = productOptional.get();
+
+            Product product = new Product();
+            product.setName( productSaved.getName());
 
             ProductRepository.save(product);
         }

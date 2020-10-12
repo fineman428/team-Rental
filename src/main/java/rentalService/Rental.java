@@ -42,6 +42,7 @@ public class Rental {
     public void onPreRemove(){
         RentalCanceled rentalCanceled = new RentalCanceled();
         BeanUtils.copyProperties(this, rentalCanceled);
+        rentalCanceled.setStatus("CANCELED");
         rentalCanceled.publishAfterCommit();
 
         //Following code causes dependency to external APIs
@@ -49,6 +50,9 @@ public class Rental {
 
         rentalService.external.Delivery delivery = new rentalService.external.Delivery();
         // mappings goes here
+        BeanUtils.copyProperties(this, delivery);
+        delivery.setRentalId(this.id);
+        delivery.setStatus("CANCELED");
         RentalApplication.applicationContext.getBean(rentalService.external.DeliveryService.class)
                 .deliveryCancel(delivery);
 

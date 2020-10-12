@@ -16,10 +16,11 @@ public class Product {
 
     @PostPersist
     public void onPostPersist(){
+        /*
         ProductSaved productSaved = new ProductSaved();
         BeanUtils.copyProperties(this, productSaved);
         productSaved.publishAfterCommit();
-
+        */
     }
 
     public Long getId() {
