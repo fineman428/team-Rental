@@ -1,11 +1,8 @@
 package rentalService;
 
-import javax.persistence.*;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
-import java.util.Optional;
+import javax.persistence.*;
 
 @Entity
 @Table(name="Rental_table")
@@ -42,6 +39,7 @@ public class Rental {
     public void onPreRemove(){
         RentalCanceled rentalCanceled = new RentalCanceled();
         BeanUtils.copyProperties(this, rentalCanceled);
+        rentalCanceled.setStatus("CANCELED");
         rentalCanceled.publishAfterCommit();
 
         //Following code causes dependency to external APIs
@@ -49,6 +47,9 @@ public class Rental {
 
         rentalService.external.Delivery delivery = new rentalService.external.Delivery();
         // mappings goes here
+        BeanUtils.copyProperties(this, delivery);
+        delivery.setRentalId(this.id);
+        delivery.setStatus("CANCELED");
         RentalApplication.applicationContext.getBean(rentalService.external.DeliveryService.class)
                 .deliveryCancel(delivery);
 
