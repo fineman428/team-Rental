@@ -3,27 +3,25 @@ package rentalService;
 import lombok.Data;
 
 @Data
-public class RentalCanceled extends AbstractEvent {
+public class OutOfStockRentalCanceled extends AbstractEvent {
 
     private Long id;
-    private Long productId;
     private int qty;
     private String status;
+    private Long rentalId;
+
+    public OutOfStockRentalCanceled(){
+        super();
+    }
 
     /*
     public Long getId() {
         return id;
     }
 
+
     public void setId(Long id) {
         this.id = id;
-    }
-    public Long getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Long productId) {
-        this.productId = productId;
     }
     public Integer getQty() {
         return qty;
@@ -38,5 +36,14 @@ public class RentalCanceled extends AbstractEvent {
 
     public void setStatus(String status) {
         this.status = status;
-    }*/
+    }
+    public Long getRentalId() {
+        return rentalId;
+    }
+
+    public void setRentalId(Long rentalId) {
+        this.rentalId = rentalId;
+    }
+    */
+
 }

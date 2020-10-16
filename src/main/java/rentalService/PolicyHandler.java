@@ -2,8 +2,6 @@ package rentalService;
 
 import org.springframework.beans.BeanUtils;
 import rentalService.config.kafka.KafkaProcessor;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -27,7 +25,9 @@ public class PolicyHandler{
         if(productSaved.isMe()){
 
             Product product = new Product();
-            product.setName( productSaved.getName());
+            BeanUtils.copyProperties(productSaved, product);
+            product.setProductId(productSaved.getId());
+            //product.setName( productSaved.getName());
 
             ProductRepository.save(product);
         }
@@ -43,10 +43,25 @@ public class PolicyHandler{
             Optional<Rental> rentalOptional = RentalRepository.findById(delivered.getRentalId());
             Rental rental = rentalOptional.get();
             rental.setStatus(delivered.getStatus());
+            rental.setDeliveryId(delivered.getId());
 
             RentalRepository.save(rental);
         }
 
     }
+    @StreamListener(KafkaProcessor.INPUT)
+    public void wheneverOutOfStockRentalCanceled_OutOfStockRentalCancelStatus(@Payload OutOfStockRentalCanceled outOfStockRentalCanceled){
+
+        if(outOfStockRentalCanceled.isMe()){
+            Optional<Rental> rentalOptional = RentalRepository.findById(outOfStockRentalCanceled.getRentalId());
+            Rental rental = rentalOptional.get();
+            rental.setStatus(outOfStockRentalCanceled.getStatus());
+
+            RentalRepository.save(rental);
+        }
+
+    }
+
+
 
 }
