@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+C:\projects\cna_team\team-Rental\src\main\java\rentalService\OutOfStockRentalCanceled.java
+=======
+>>>>>>> 93e03cbc247ea335cd1a8c94bce5d8440ef6b7ca
 C:\projects\cna_team\team-Rental\src\main\java\rentalService\RentalApplication.java
 C:\projects\cna_team\team-Rental\src\main\java\rentalService\RentalController.java
 C:\projects\cna_team\team-Rental\src\main\java\rentalService\PolicyHandler.java
@@ -7,6 +11,10 @@ C:\projects\cna_team\team-Rental\src\main\java\rentalService\AbstractEvent.java
 C:\projects\cna_team\team-Rental\src\main\java\rentalService\RentalCanceled.java
 C:\projects\cna_team\team-Rental\src\main\java\rentalService\Rentaled.java
 C:\projects\cna_team\team-Rental\src\main\java\rentalService\external\Delivery.java
+<<<<<<< HEAD
+C:\projects\cna_team\team-Rental\src\main\java\rentalService\ProductRegisted.java
+=======
+>>>>>>> 93e03cbc247ea335cd1a8c94bce5d8440ef6b7ca
 C:\projects\cna_team\team-Rental\src\main\java\rentalService\config\kafka\KafkaProcessor.java
 C:\projects\cna_team\team-Rental\src\main\java\rentalService\Rental.java
 C:\projects\cna_team\team-Rental\src\main\java\rentalService\ProductController.java

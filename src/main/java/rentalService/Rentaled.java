@@ -1,13 +1,17 @@
 package rentalService;
 
+import lombok.Data;
+
+@Data
 public class Rentaled extends AbstractEvent {
 
     private Long id;
     private Long productId;
-    private Integer qty;
+    private int qty;
     private String status;
     private String productName;
 
+    /*
     public Long getId() {
         return id;
     }
@@ -37,6 +41,6 @@ public class Rentaled extends AbstractEvent {
     }
     public void setProductName(String productName) {
         this.productName = productName;
-    }
+    }*/
 
 }
