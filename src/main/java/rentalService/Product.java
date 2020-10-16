@@ -24,6 +24,11 @@ public class Product {
         BeanUtils.copyProperties(this, productRegisted);
         productRegisted.publishAfterCommit();
 
+        /*
+        ProductSaved productSaved = new ProductSaved();
+        BeanUtils.copyProperties(this, productSaved);
+        productSaved.publishAfterCommit();
+        */
     }
 
     /*

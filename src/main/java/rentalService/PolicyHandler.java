@@ -27,7 +27,6 @@ public class PolicyHandler{
             Product product = new Product();
             BeanUtils.copyProperties(productSaved, product);
             product.setProductId(productSaved.getId());
-            //product.setName( productSaved.getName());
 
             ProductRepository.save(product);
         }

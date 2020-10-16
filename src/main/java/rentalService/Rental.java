@@ -2,14 +2,8 @@ package rentalService;
 
 import javax.persistence.*;
 
-import jdk.nashorn.internal.objects.annotations.Getter;
-import jdk.nashorn.internal.objects.annotations.Setter;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
-import java.util.Optional;
 
 @Data
 @Entity
