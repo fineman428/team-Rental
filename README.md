@@ -51,20 +51,8 @@ apt-get install -y kubectl
 eksctl create cluster --name skccuser02-team --version 1.17 --nodegroup-name standard-workers --node-type t3.medium --nodes 3 --nodes-min 1 --nodes-max 3
 
 
-
-
-[ℹ]  deploying stack "eksctl-user02-eks-cluster"
-[✖]  unexpected status "ROLLBACK_IN_PROGRESS" while waiting for CloudFormation stack "eksctl-user02-eks-cluster"
-[ℹ]  fetching stack events in attempt to troubleshoot the root cause of the failure
-[!]  AWS::EC2::VPC/VPC: DELETE_IN_PROGRESS
-[!]  AWS::EC2::EIP/NATIP: DELETE_IN_PROGRESS
-[!]  AWS::EC2::InternetGateway/InternetGateway: DELETE_IN_PROGRESS
-[✖]  AWS::EC2::EIP/NATIP: CREATE_FAILED – "Resource creation cancelled"
-[✖]  AWS::EC2::InternetGateway/InternetGateway: CREATE_FAILED – "Resource creation cancelled"
-[✖]  AWS::EC2::VPC/VPC: CREATE_FAILED – "Resource creation cancelled"
-[✖]  AWS::IAM::Role/ServiceRole: CREATE_FAILED – "API: iam:CreateRole User: arn:aws:iam::496278789073:user/Skccuser06 is not authorized to perform: iam:CreateRole on resource: arn:aws:iam::496278789073:role/eksctl-user02-eks-cluster-ServiceRole-H66B4ZHRBGFW with an explicit deny"
-[!]  1 error(s) occurred and cluster hasn't been created properly, you may wish to check CloudFormation console
-[ℹ]  to cleanup resources, run 'eksctl delete cluster --region=ap-northeast-2 --name=user02-eks'
-[✖]  waiting for CloudFormation stack "eksctl-user02-eks-cluster": ResourceNotReady: failed waiting for successful resource state
-
-
+aws configure
+   . Access key id : AKIAXHDEFLPIZHCJKIPE
+   . Secret Access key : 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
+   . region name : ap-northeast-2
+   . out put format json
