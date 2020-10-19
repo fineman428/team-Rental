@@ -148,7 +148,7 @@ kubectl expose deploy rental --port=8080 -n team-rent
 kubectl create deploy product --image=496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-product:v1 -n team-rent
 kubectl expose deploy product --port=8080 -n team-rent
 # information
-kubectl create deploy information --image=496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-team-information:v1 -n team-rent
+kubectl create deploy information --image=496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-information:v1 -n team-rent
 kubectl expose deploy information --port=8080 -n team-rent
 # delivery
 kubectl create deploy delivery --image=496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-delivery:v1 -n team-rent
