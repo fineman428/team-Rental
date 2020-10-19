@@ -157,6 +157,8 @@ kubectl expose deploy delivery --port=8080 -n team-rent
 kubectl create deploy gateway --image=496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-gateway:v1 -n team-rent
 kubectl expose deploy gateway --type=LoadBalancer --port=8080 -n team-rent
 
+kubectl delete deploy rental -n team-rent
+kubectl delete service rental -n team-rent
 
 
 ======================
