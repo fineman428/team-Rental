@@ -51,8 +51,9 @@ apt-get install -y kubectl
 eksctl create cluster --name skccuser02-team --version 1.17 --nodegroup-name standard-workers --node-type t3.medium --nodes 3 --nodes-min 1 --nodes-max 3
 
 
+# 
 aws configure
    . Access key id : AKIAXHDEFLPIZHCJKIPE
    . Secret Access key : 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
    . region name : ap-northeast-2
-   . out put format json
+   . out put format : json
