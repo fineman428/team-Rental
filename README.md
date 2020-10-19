@@ -33,3 +33,7 @@ pip3 install --upgrade --user awscli
    . out put format json
 
 
+AWS EKS 클러스터 생성
+eksctl create cluster --name skccuser02-team --version 1.17 --nodegroup-name standard-workers --node-type t3.medium --nodes 3 --nodes-min 1 --nodes-max 3
+
+
