@@ -136,3 +136,26 @@ helm repo update
 - namespace
 helm install --name my-kafka --namespace kafka incubator/kafka
 
+
+
+## 팀 과제 k8s deploy 띄우기 (no yaml )
+# rental 
+# 올린 이미지를 통해 container 생성
+kubectl create deploy rental --image=496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-rental:v1 -n team-rent
+kubectl expose deploy rental --type=LoadBalancer --port=8080 -n team-rent
+
+# product 
+kubectl create deploy product --image=496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-product:v1 -n team-rent
+kubectl expose deploy product --port=8080 -n team-rent
+# information
+kubectl create deploy information --image=496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-team-information:v1 -n team-rent
+kubectl expose deploy information --port=8080 -n team-rent
+# delivery
+kubectl create deploy delivery --image=496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-delivery:v1 -n team-rent
+kubectl expose deploy delivery --port=8080 -n team-rent
+# gateway
+kubectl create deploy gateway --image=496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-gateway:v1 -n team-rent
+kubectl expose deploy gateway --type=LoadBalancer --port=8080 -n team-rent
+
+
+
