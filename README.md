@@ -106,4 +106,7 @@ docker push 496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-gateway
 
 
 
+# 네임스페이스 생성 
+kubectl create namespace team-rent
+
 
