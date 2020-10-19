@@ -177,30 +177,32 @@ kubectl delete service rental -n team-rent
 Cd temp-Rental
 kubectl create -f cm-deployment.yaml
 
+# yaml 파일내 ID name 은 모두 소문자로 
+
 # rental 
 cd team-Rental/kubernetes
-kubectl create -f deployment.yml
-kubectl create -f service.yaml
+kubectl create -f deployment.yml -n team-rent
+kubectl create -f service.yaml -n team-rent
 
 # product
 cd team-Product/kubernetes
-kubectl create -f deployment.yml
-kubectl create -f service.yaml
+kubectl create -f deployment.yml -n team-rent
+kubectl create -f service.yaml -n team-rent
 
 # information
 cd team-Information/kubernetes
-kubectl create -f deployment.yml
-kubectl create -f service.yaml
+kubectl create -f deployment.yml -n team-rent
+kubectl create -f service.yaml -n team-rent
 
 # delivery
-cd team-Delivery/kubernetes
-kubectl create -f deployment.yml
-kubectl create -f service.yaml
+cd team-Delivery/kubernetes 
+kubectl create -f deployment.yml -n team-rent
+kubectl create -f service.yaml -n team-rent
 
 # gateway
 cd team-gateway/kubernetes
-kubectl create -f deployment.yml
-kubectl create -f service.yaml
+kubectl create -f deployment.yml -n team-rent
+kubectl create -f service.yaml -n team-rent
 
 
 ======================
