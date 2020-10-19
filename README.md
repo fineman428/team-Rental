@@ -36,6 +36,15 @@ sudo mv /tmp/eksctl /usr/local/bin
 
 eksctl version
 
+### kuberctl  설치 work flowy
+apt-get update && apt-get install -y apt-transport-https
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | tee -a /etc/apt/sources.list.d/kubernetes.list
+  . " 문자 주의 , 실제 입력된 값에는 " 없이 파일이 등록되어 있어야 함 
+  . kubernetes.list 잘못 생성된 경우 경로 폴더에 접근하여 sudo nano 로 편집
+ . work flowy 에서 붙여 넣을시 중간에 ? 문자 생성 확인  후 제거 
+apt-get update
+apt-get install -y kubectl
 
 
 # AWS EKS 클러스터 생성
