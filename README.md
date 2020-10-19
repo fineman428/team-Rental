@@ -110,3 +110,7 @@ docker push 496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-gateway
 kubectl create namespace team-rent
 
 
+# nano 설치 
+apt-get install nano
+
+
