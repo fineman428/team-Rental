@@ -57,3 +57,15 @@ aws configure
    . Secret Access key : +cdXyhuJ/ApsAo6Y5iEc7X3eZKDFmEUXaAy4syT2
    . region name : ap-northeast-2
    . out put format : json
+
+
+
+[✖]  unexpected status "ROLLBACK_IN_PROGRESS" while waiting for CloudFormation stack "eksctl-user02-eks-cluster"
+[ℹ]  fetching stack events in attempt to troubleshoot the root cause of the failure
+[✖]  AWS::EC2::InternetGateway/InternetGateway: CREATE_FAILED – "Resource creation cancelled"
+[✖]  AWS::EC2::VPC/VPC: CREATE_FAILED – "Resource creation cancelled"
+[✖]  AWS::EC2::EIP/NATIP: CREATE_FAILED – "Resource creation cancelled"
+[✖]  AWS::IAM::Role/ServiceRole: CREATE_FAILED – "API: iam:CreateRole User: arn:aws:iam::496278789073:user/Skccuser02 is not authorized to perform: iam:CreateRole on resource: arn:aws:iam::496278789073:role/eksctl-user02-eks-cluster-ServiceRole-1NGFMBRGIWYZH with an explicit deny"
+[!]  1 error(s) occurred and cluster hasn't been created properly, you may wish to check CloudFormation console
+[ℹ]  to cleanup resources, run 'eksctl delete cluster --region=ap-northeast-2 --name=user02-eks'
+[✖]  waiting for CloudFormation stack "eksctl-user02-eks-cluster": ResourceNotReady: failed waiting for successful resource state
