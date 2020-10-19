@@ -142,7 +142,7 @@ kubectl -n kafka exec my-kafka-0 -- /usr/bin/kafka-topics --zookeeper my-kafka-z
 kubectl -n kafka exec my-kafka-0 -- /usr/bin/kafka-topics --zookeeper my-kafka-zookeeper:2181 --list
 
 
-## 팀 과제 k8s deploy 띄우기 (no yaml )
+### 팀 과제 k8s deploy 띄우기 (no yaml )
 # rental 
 # 올린 이미지를 통해 container 생성
 kubectl create deploy rental --image=496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-rental:v1 -n team-rent
@@ -163,6 +163,40 @@ kubectl expose deploy gateway --type=LoadBalancer --port=8080 -n team-rent
 
 kubectl delete deploy rental -n team-rent
 kubectl delete service rental -n team-rent
+
+### 팀 과제 k8s deploy 띄우기 (yaml )
+ - deployment 생성 
+   . kubectl create -f cm-deployment.yaml
+ - Service 생성
+   . kubectl create -f cm-service.yaml
+
+Cd temp-Rental
+kubectl create -f cm-deployment.yaml
+
+# rental 
+cd team-Rental/kubernetes
+kubectl create -f ./Kubernetes/deployment.yml
+kubectl create -f ./Kubernetes/service.yaml
+
+# product
+cd team-Product/kubernetes
+kubectl create -f ./Kubernetes/deployment.yml
+kubectl create -f ./Kubernetes/service.yaml
+
+# information
+cd team-Information/kubernetes
+kubectl create -f ./Kubernetes/deployment.yml
+kubectl create -f ./Kubernetes/service.yaml
+
+# delivery
+cd team-Delivery/kubernetes
+kubectl create -f ./Kubernetes/deployment.yml
+kubectl create -f ./Kubernetes/service.yaml
+
+# gateway
+cd team-gateway/kubernetes
+kubectl create -f ./Kubernetes/deployment.yml
+kubectl create -f ./Kubernetes/service.yaml
 
 
 ======================
@@ -186,3 +220,8 @@ http: error: ConnectionError: HTTPConnectionPool(host='product', port=8080): Max
 
 
 http a272043ee71fc482b9194feda4af0471-1504398459.ap-northeast-1.elb.amazonaws.com:8080/products
+
+
+
+
+
