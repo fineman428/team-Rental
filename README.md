@@ -1,3 +1,13 @@
+Applicatoin 구현
+
+lombok 
+플러그인 설치 
+File -> settings -> Plugins -> Marketplace -> Lombok
+플러그인 미인지시 
+Settings -> Compiler -> Annotation Processors -> Enable annotation processing
+메이븐 소스 다운로드
+
+
 # team-Rental
 
 # ubuntu update
