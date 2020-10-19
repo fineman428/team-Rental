@@ -77,3 +77,21 @@ IAMFullAccess
 AmazonEC2FullAccess
 AmazonS3FullAccess
 
+
+# App gir 클론 받기
+cd ~
+mkdir project
+git clone https://github.com/fineman428/team-Rental.git
+git clone https://github.com/fineman428/team-Product.git
+git clone https://github.com/fineman428/team-Information.git
+git clone https://github.com/fineman428/team-gateway.git
+git clone https://github.com/fineman428/team-Delivery.git
+
+
+# 메이븐 lib 받기 
+각 application 폴더별로 들어가서 
+mvn package
+
+
+
+
