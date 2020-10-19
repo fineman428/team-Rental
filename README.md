@@ -67,37 +67,40 @@ mvn package
 
 
 # ECR Repository 만들기
+
 # team-Delivery
 Cd team-Delivery
 aws ecr create-repository --repository-name skccuser02-delivery --image-scanning-configuration scanOnPush=true --region  ap-northeast-1
-docker build -t 496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser-team-delivery:v1 .
-docker push 496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser-team-delivery:v1
+docker login --username AWS -p $(aws ecr get-login-password --region ap-northeast-1) 496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-delivery
+docker build -t 496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-delivery:v1 .
+docker push 496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-delivery:v1
 
 #team-information
 Cd team-information
 aws ecr create-repository --repository-name skccuser02-information --image-scanning-configuration scanOnPush=true --region  ap-northeast-1
+docker login --username AWS -p $(aws ecr get-login-password --region ap-northeast-1) 496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-information
 docker build -t 496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-information:v1 .
 docker push 496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-information:v1
 
 # team-product
 Cd team-product
 aws ecr create-repository --repository-name skccuser02-product --image-scanning-configuration scanOnPush=true --region  ap-northeast-1
+docker login --username AWS -p $(aws ecr get-login-password --region ap-northeast-1) 496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-product
 docker build -t 496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-product:v1 .
 docker push 496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-product:v1
 
 ## team-Rental
-# ECR Repository 생성
-# 도커 빌드
-# 도커 푸시
 cd team-Rental
 aws ecr create-repository --repository-name skccuser02-rental --image-scanning-configuration scanOnPush=true --region  ap-northeast-1
+docker login --username AWS -p $(aws ecr get-login-password --region ap-northeast-1) 496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-rental
 docker build -t 496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-rental:v1 .
 docker push 496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-rental:v1
--no basic auth credentials
+-메시지 no basic auth credentials
 
 # team-gateway
 Cd team-gateway
 aws ecr create-repository --repository-name skccuser02-gateway --image-scanning-configuration scanOnPush=true --region  ap-northeast-1
+docker login --username AWS -p $(aws ecr get-login-password --region ap-northeast-1) 496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-gateway
 docker build -t 496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-gateway:v1 .
 docker push 496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-gateway:v1
 
