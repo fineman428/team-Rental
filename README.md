@@ -24,3 +24,5 @@ sudo ./aws/install
 # AWS CLI 버전 2를 사용할 수 없는 경우 
 다음 명령을 사용하여 AWS CLI 버전 1의 최신 버전이 설치되어 있는지 확인합니다.
 pip3 install --upgrade --user awscli
+
+
