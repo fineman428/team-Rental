@@ -159,3 +159,18 @@ kubectl expose deploy gateway --type=LoadBalancer --port=8080 -n team-rent
 
 
 
+======================
+서비스 테스트 - team ver 2 
+======================
+## 데이터 조회
+http GET http://localhost:8081/products/1
+
+http GET http://product:8080/product
+http GET http://product:8080/products
+
+http http://Product:8080
+http http://product:8080
+http http://Rental:8080
+http http://Delivery:8080
+http http://Information:8080
+http http://gateway:8080
