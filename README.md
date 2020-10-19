@@ -24,6 +24,20 @@ sudo unzip awscliv2.zip
 sudo ./aws/install
 
 
+### 설치 eksctl
+Linux에서 curl을 사용하여 eksctl을 설치하거나 업그레이드하려면
+다음 명령으로 eksctl 최신 릴리스를 다운로드하여 압축 해제합니다.
+
+sudo curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+ . 압축 해제된 이진 파일을 /usr/local/bin으로 옮깁니다.
+
+sudo mv /tmp/eksctl /usr/local/bin
+다음 명령으로 설치가 제대로 되었는지 테스트합니다.
+
+eksctl version
+
+
+
 # AWS EKS 클러스터 생성
 eksctl create cluster --name skccuser02-team --version 1.17 --nodegroup-name standard-workers --node-type t3.medium --nodes 3 --nodes-min 1 --nodes-max 3
 
