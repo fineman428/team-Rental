@@ -69,3 +69,11 @@ aws configure
 [!]  1 error(s) occurred and cluster hasn't been created properly, you may wish to check CloudFormation console
 [ℹ]  to cleanup resources, run 'eksctl delete cluster --region=ap-northeast-2 --name=user02-eks'
 [✖]  waiting for CloudFormation stack "eksctl-user02-eks-cluster": ResourceNotReady: failed waiting for successful resource state
+
+
+AmazonEKSClusterPolicy
+AdministratorAccess
+IAMFullAccess
+AmazonEC2FullAccess
+AmazonS3FullAccess
+
