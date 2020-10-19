@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: rental
-          image: 496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-rental
+          image: 496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-rental:v1
           ports:
             - containerPort: 8080
           readinessProbe:
