@@ -175,28 +175,28 @@ kubectl create -f cm-deployment.yaml
 
 # rental 
 cd team-Rental/kubernetes
-kubectl create -f ./Kubernetes/deployment.yml
-kubectl create -f ./Kubernetes/service.yaml
+kubectl create -f deployment.yml
+kubectl create -f service.yaml
 
 # product
 cd team-Product/kubernetes
-kubectl create -f ./Kubernetes/deployment.yml
-kubectl create -f ./Kubernetes/service.yaml
+kubectl create -f deployment.yml
+kubectl create -f service.yaml
 
 # information
 cd team-Information/kubernetes
-kubectl create -f ./Kubernetes/deployment.yml
-kubectl create -f ./Kubernetes/service.yaml
+kubectl create -f deployment.yml
+kubectl create -f service.yaml
 
 # delivery
 cd team-Delivery/kubernetes
-kubectl create -f ./Kubernetes/deployment.yml
-kubectl create -f ./Kubernetes/service.yaml
+kubectl create -f deployment.yml
+kubectl create -f service.yaml
 
 # gateway
 cd team-gateway/kubernetes
-kubectl create -f ./Kubernetes/deployment.yml
-kubectl create -f ./Kubernetes/service.yaml
+kubectl create -f deployment.yml
+kubectl create -f service.yaml
 
 
 ======================
