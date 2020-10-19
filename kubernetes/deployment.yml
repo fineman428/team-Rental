@@ -13,13 +13,7 @@ spec:
     metadata:
       labels:
         app: Rental
-    spec:
-      hosts:
-      - rental
-      http:
-      - route:
-        - destination:
-            host: rental
+    spec:      
       containers:
         - name: Rental
           image: 496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-rental
