@@ -104,6 +104,8 @@ docker login --username AWS -p $(aws ecr get-login-password --region ap-northeas
 docker build -t 496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-gateway:v1 .
 docker push 496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-gateway:v1
 
+# ECR 리파지토리 삭제
+aws ecr delete-repository --repository-name skccuser02-delivery --force
 
 
 # 네임스페이스 생성 
