@@ -1,0 +1,154 @@
+
+=======================
+Kafka  설치 windows 
+=======================
+
+# Kafka  설치
+https://kafka.apache.org/downloads
+압축풀기
+C:\kafka_2.13-2.6.0
+
+bin\windows 폴더이동
+windows os가 아닌경우 bin 까지만 
+
+### zookeeper 실행
+C:\kafka_2.13-2.6.0\bin\windows
+명령어 : zookeeper-server-start.bat ../../config/zookeeper.properties
+
+오류발생시 JAVA 환경변수 확인
+https://nillk.github.io/2016/04/21/Zookeeper-Kafka-cmd-run-error/
+C:\projects\smcust\jdk1.8.0_241
+C:\Program Files\Java\jdk-15
+
+### kafka 실행
+#zookeeper 기반으로 실행 필요
+ cmd 창을 새로 열고 커맨드 실행
+명령어 kafka-server-start.bat ../../config/server.properties
+
+#기본포트 2181
+
+### 이벤트 발행
+# 토픽생성
+kafka-topics.bat --zookeeper localhost:2181 --topic eventTopic --create --partitions 1 --replication-factor 1
+kafka-topics.bat --zookeeper localhost:2181 --topic rentalService --create --partitions 1 --replication-factor 1
+# 토픽확인
+kafka-topics.bat --zookeeper localhost:2181 --list
+
+#이벤트 발행하기
+kafka-console-producer.bat --broker-list http://localhost:9092 --topic eventTopic
+
+### 이벤트 수신 
+#이벤트 수신하기
+kafka-console-consumer.bat --bootstrap-server http://localhost:9092 --topic eventTopic --from-beginning
+kafka-console-consumer.bat --bootstrap-server http://localhost:9092 --topic mall --from-beginning
+
+
+
+
+======================
+서비스 테스트 - team ver 2 
+======================
+## 데이터 조회
+http GET http://localhost:8081/products/1
+
+http GET http://product:8080/product
+http GET http://product:8080/products
+
+http http://Product:8080
+http http://product:8080
+http http://Rental:8080
+http http://Delivery:8080
+http http://Information:8080
+http http://gateway:8080
+
+ 
+Step 1-1 상품정보 등록
+http POST http://localhost:8081/products name=컴퓨터 qty=9
+http POST http://Product:8080/products name=컴퓨터 qty=9
+
+http POST http://localhost:8081/products name=모니터 qty=9
+http POST http://Product:8080/products name=모니터 qty=9
+ 
+Step 1-2 결과 조회
+### product
+http GET http://localhost:8081/products/1
+http GET http://Product:8080/products/1
+# rental
+http GET http://localhost:8082/products/1
+http GET http://Rental:8080/products/1
+# delivery
+http GET http://localhost:8083/products/1
+http GET http://Delivery:8080/products/1
+
+ 
+ 
+Step 2-1 렌탈 요청
+# 정상 렌탈 요청 
+http POST http://localhost:8082/rentals productId=1 qty=3 status=ORDERED productName=컴퓨터
+http POST http://Rental:8080/rentals productId=1 qty=5 status=ORDERED productName=컴퓨터
+
+# 재고 수량 이상 렌탈 요청
+http POST http://localhost:8082/rentals productId=1 qty=12 status=ORDERED productName=컴퓨터
+http POST http://Rental:8080/rentals productId=1 qty=12 status=ORDERED productName=컴퓨터
+
+# 미등록 상품 렌탈요청
+http POST http://localhost:8082/rentals productId=22 qty=12 status=ORDERED productName=컴퓨터
+http POST http://Rental:8080/rentals productId=22 qty=12 status=ORDERED productName=컴퓨터
+
+
+Step 2-2 결과 조회
+# rental 렌탈 주문 정보
+http GET http://localhost:8082/rentals/1
+http GET http://Rental:8080/rentals/1
+# delivery 배송정보
+http GET http://localhost:8083/deliveries/1
+http GET http://Delivery:8080/deliveries/1
+# delivery 재고차감 확인
+http GET http://localhost:8083/products/1
+http GET http://Delivery:8080/products/1
+# information 내 주문 View 
+http GET http://localhost:8084/myOrders/1
+http GET http://Information:8080/myOrders/1
+ 
+Step 3-1 렌탈 취소 요청
+http DELETE http://localhost:8082/rentals/1
+http DELETE http://Rental:8080/rentals/1
+ 
+Step 3-2 결과 조회
+# rental
+http GET http://localhost:8082/rentals/1
+http GET http://Rental:8080/rentals/1
+# delivery
+http GET http://localhost:8083/deliveries/1
+http GET http://Delivery:8080/deliveries/1
+# information
+http GET http://localhost:8084/myOrders/1
+http GET http://Information:8080/myOrders/1
+ 
+ 
+참고 - 결과 조회
+# product
+http GET http://localhost:8081/products/1
+http GET http://Product:8080/products/1
+# rental
+http GET http://localhost:8082/products/1
+http GET http://Rental:8080/products/1
+ 
+http GET http://localhost:8082/rentals/1
+http GET http://Rental:8080/rentals/1
+# delivery
+http GET http://localhost:8083/deliveries/1
+http GET http://Delivery:8080/deliveries/1
+# information
+http GET http://localhost:8084/myOrders/1
+http GET http://Information:8080/myOrders/1
+ 
+# gateway
+http GET http://localhost:8088/reservations/1
+# gateway-cloud
+http GET http://Reservation:8080/reservations/1
+ 
+
+출처: <https://mail.google.com/mail/u/0/#inbox/FMfcgxwKhqmjqtfPgbxllNTdTMMnWLjw> 
+
+http a272043ee71fc482b9194feda4af0471-1504398459.ap-northeast-1.elb.amazonaws.com:8080/products
