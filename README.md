@@ -23,6 +23,7 @@ sudo curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv
 sudo unzip awscliv2.zip
 sudo ./aws/install
 
+# aws config
 
 ### 설치 eksctl
 Linux에서 curl을 사용하여 eksctl을 설치하거나 업그레이드하려면
