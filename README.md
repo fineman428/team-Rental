@@ -114,3 +114,25 @@ kubectl create namespace team-rent
 apt-get install nano
 
 
+### 헬름설치
+EKS 클러스터 구성후 설치 가능
+
+helm version
+# 설치
+sudo curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | bash
+
+## Helm 초기화 설정
+# helm 의 설치관리자를 위한 시스템 사용자 생성
+kubectl --namespace kube-system create sa tiller
+# 계정 롤 만들기
+kubectl create clusterrolebinding tiller --clusterrole cluster-admin --serviceaccount=kube-system:tiller
+
+helm init --service-account tiller
+kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'
+helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubator
+helm repo update
+
+# helm으로 kafka 설치
+- namespace
+helm install --name my-kafka --namespace kafka incubator/kafka
+
