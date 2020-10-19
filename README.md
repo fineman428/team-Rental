@@ -138,25 +138,29 @@ helm install --name my-kafka --namespace kafka incubator/kafka
 
 # kafka 토픽 생성
 kubectl -n kafka exec my-kafka-0 -- /usr/bin/kafka-topics --zookeeper my-kafka-zookeeper:2181 --topic rentalService --create --partitions 1 --replication-factor 1
+
 # kafka 토픽 리스트 확인 
 kubectl -n kafka exec my-kafka-0 -- /usr/bin/kafka-topics --zookeeper my-kafka-zookeeper:2181 --list
 
 
 ### 팀 과제 k8s deploy 띄우기 (no yaml )
-# rental 
 # 올린 이미지를 통해 container 생성
+# rental 
 kubectl create deploy rental --image=496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-rental:v1 -n team-rent
 kubectl expose deploy rental --port=8080 -n team-rent
 
 # product 
 kubectl create deploy product --image=496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-product:v1 -n team-rent
 kubectl expose deploy product --port=8080 -n team-rent
+
 # information
 kubectl create deploy information --image=496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-information:v1 -n team-rent
 kubectl expose deploy information --port=8080 -n team-rent
+
 # delivery
 kubectl create deploy delivery --image=496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-delivery:v1 -n team-rent
 kubectl expose deploy delivery --port=8080 -n team-rent
+
 # gateway
 kubectl create deploy gateway --image=496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-gateway:v1 -n team-rent
 kubectl expose deploy gateway --type=LoadBalancer --port=8080 -n team-rent
@@ -223,5 +227,54 @@ http a272043ee71fc482b9194feda4af0471-1504398459.ap-northeast-1.elb.amazonaws.co
 
 
 
+--상품등록
+http a272043ee71fc482b9194feda4af0471-1504398459.ap-northeast-1.elb.amazonaws.com:8080/products name=Computer qty=9
+http a272043ee71fc482b9194feda4af0471-1504398459.ap-northeast-1.elb.amazonaws.com:8080/products name=Monitor qty=9
 
+--상품내역 확인
+http a272043ee71fc482b9194feda4af0471-1504398459.ap-northeast-1.elb.amazonaws.com:8080/products/1
+http a272043ee71fc482b9194feda4af0471-1504398459.ap-northeast-1.elb.amazonaws.com:8080/products/2
+http a272043ee71fc482b9194feda4af0471-1504398459.ap-northeast-1.elb.amazonaws.com:8080/products
+
+
+--정상대여
+http a272043ee71fc482b9194feda4af0471-1504398459.ap-northeast-1.elb.amazonaws.com:8080/rentals productId=1 productName=Computer qty=3
+http a272043ee71fc482b9194feda4af0471-1504398459.ap-northeast-1.elb.amazonaws.com:8080/rentals productId=2 productName=Monitor qty=3
+
+http a272043ee71fc482b9194feda4af0471-1504398459.ap-northeast-1.elb.amazonaws.com:8080/rentals/1
+http a272043ee71fc482b9194feda4af0471-1504398459.ap-northeast-1.elb.amazonaws.com:8080/rentals/2
+
+http a272043ee71fc482b9194feda4af0471-1504398459.ap-northeast-1.elb.amazonaws.com:8080/deliveries/1
+http a272043ee71fc482b9194feda4af0471-1504398459.ap-northeast-1.elb.amazonaws.com:8080/deliveries/2
+
+--비정상대여
+http a272043ee71fc482b9194feda4af0471-1504398459.ap-northeast-1.elb.amazonaws.com:8080/rentals productId=1 productName=Computer qty=10
+http a272043ee71fc482b9194feda4af0471-1504398459.ap-northeast-1.elb.amazonaws.com:8080/rentals productId=2 productName=Monitor qty=10
+
+http a272043ee71fc482b9194feda4af0471-1504398459.ap-northeast-1.elb.amazonaws.com:8080/rentals/3
+http a272043ee71fc482b9194feda4af0471-1504398459.ap-northeast-1.elb.amazonaws.com:8080/rentals/4
+
+http a272043ee71fc482b9194feda4af0471-1504398459.ap-northeast-1.elb.amazonaws.com:8080/deliveries/3
+http a272043ee71fc482b9194feda4af0471-1504398459.ap-northeast-1.elb.amazonaws.com:8080/deliveries/4
+
+
+http a272043ee71fc482b9194feda4af0471-1504398459.ap-northeast-1.elb.amazonaws.com:8080/rentals productId=100 productName=Computer qty=10
+http a272043ee71fc482b9194feda4af0471-1504398459.ap-northeast-1.elb.amazonaws.com:8080/rentals productId=200 productName=Monitor qty=10
+
+http a272043ee71fc482b9194feda4af0471-1504398459.ap-northeast-1.elb.amazonaws.com:8080/rentals/5
+http a272043ee71fc482b9194feda4af0471-1504398459.ap-northeast-1.elb.amazonaws.com:8080/rentals/6
+
+http a272043ee71fc482b9194feda4af0471-1504398459.ap-northeast-1.elb.amazonaws.com:8080/deliveries/5
+http a272043ee71fc482b9194feda4af0471-1504398459.ap-northeast-1.elb.amazonaws.com:8080/deliveries/6
+
+--대여내역
+http a272043ee71fc482b9194feda4af0471-1504398459.ap-northeast-1.elb.amazonaws.com:8080/myOrders/
+
+
+
+http DELETE a272043ee71fc482b9194feda4af0471-1504398459.ap-northeast-1.elb.amazonaws.com:8080/rentals/1
+
+
+
+http a272043ee71fc482b9194feda4af0471-1504398459.ap-northeast-1.elb.amazonaws.com:8080/deliveries
 
