@@ -51,33 +51,6 @@ apt-get install -y kubectl
 eksctl create cluster --name skccuser02-team --version 1.17 --nodegroup-name standard-workers --node-type t3.medium --nodes 3 --nodes-min 1 --nodes-max 3
 
 
-# 
-aws configure
-   . Access key id : AKIAXHDEFLPIZHCJKIPE
-   . Secret Access key : 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
-   . region name : ap-northeast-2
-   . out put format : json
-
-
-
-[✖]  unexpected status "ROLLBACK_IN_PROGRESS" while waiting for CloudFormation stack "eksctl-user02-eks-cluster"
-[ℹ]  fetching stack events in attempt to troubleshoot the root cause of the failure
-[✖]  AWS::EC2::InternetGateway/InternetGateway: CREATE_FAILED – "Resource creation cancelled"
-[✖]  AWS::EC2::VPC/VPC: CREATE_FAILED – "Resource creation cancelled"
-[✖]  AWS::EC2::EIP/NATIP: CREATE_FAILED – "Resource creation cancelled"
-[✖]  AWS::IAM::Role/ServiceRole: CREATE_FAILED – "API: iam:CreateRole User: arn:aws:iam::496278789073:user/Skccuser02 is not authorized to perform: iam:CreateRole on resource: arn:aws:iam::496278789073:role/eksctl-user02-eks-cluster-ServiceRole-1NGFMBRGIWYZH with an explicit deny"
-[!]  1 error(s) occurred and cluster hasn't been created properly, you may wish to check CloudFormation console
-[ℹ]  to cleanup resources, run 'eksctl delete cluster --region=ap-northeast-2 --name=user02-eks'
-[✖]  waiting for CloudFormation stack "eksctl-user02-eks-cluster": ResourceNotReady: failed waiting for successful resource state
-
-
-AmazonEKSClusterPolicy
-AdministratorAccess
-IAMFullAccess
-AmazonEC2FullAccess
-AmazonS3FullAccess
-
-
 # App gir 클론 받기
 cd ~
 mkdir project
@@ -91,6 +64,42 @@ git clone https://github.com/fineman428/team-Delivery.git
 # 메이븐 lib 받기 
 각 application 폴더별로 들어가서 
 mvn package
+
+
+# ECR Repository 만들기
+# team-Delivery
+Cd team-Delivery
+aws ecr create-repository --repository-name skccuser02-delivery --image-scanning-configuration scanOnPush=true --region  ap-northeast-1
+docker build -t 496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser-team-delivery:v1 .
+docker push 496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser-team-delivery:v1
+
+#team-information
+Cd team-information
+aws ecr create-repository --repository-name skccuser02-information --image-scanning-configuration scanOnPush=true --region  ap-northeast-1
+docker build -t 496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-information:v1 .
+docker push 496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-information:v1
+
+# team-product
+Cd team-product
+aws ecr create-repository --repository-name skccuser02-product --image-scanning-configuration scanOnPush=true --region  ap-northeast-1
+docker build -t 496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-product:v1 .
+docker push 496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-product:v1
+
+## team-Rental
+# ECR Repository 생성
+# 도커 빌드
+# 도커 푸시
+cd team-Rental
+aws ecr create-repository --repository-name skccuser02-rental --image-scanning-configuration scanOnPush=true --region  ap-northeast-1
+docker build -t 496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-rental:v1 .
+docker push 496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-rental:v1
+-no basic auth credentials
+
+# team-gateway
+Cd team-gateway
+aws ecr create-repository --repository-name skccuser02-gateway --image-scanning-configuration scanOnPush=true --region  ap-northeast-1
+docker build -t 496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-gateway:v1 .
+docker push 496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-gateway:v1
 
 
 
