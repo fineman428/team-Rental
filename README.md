@@ -70,12 +70,12 @@ mvn package
 
 # team-Delivery
 Cd team-Delivery
-aws ecr create-repository --repository-name skccuser02-delivery --image-scanning-configuration scanOnPush=true --region  ap-northeast-1
+aws ecr create-repository --repository-name skccuser02-delivery2 --image-scanning-configuration scanOnPush=true --region  ap-northeast-1
 docker login --username AWS -p $(aws ecr get-login-password --region ap-northeast-1) 496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-delivery
-docker build -t 496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-delivery:v1 .
-docker push 496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-delivery:v1
+docker build -t 496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-delivery2:v1 .
+docker push 496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-delivery2:v1
 
-#team-information
+# team-information
 Cd team-information
 aws ecr create-repository --repository-name skccuser02-information --image-scanning-configuration scanOnPush=true --region  ap-northeast-1
 docker login --username AWS -p $(aws ecr get-login-password --region ap-northeast-1) 496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-information
@@ -160,7 +160,7 @@ kubectl create deploy information --image=496278789073.dkr.ecr.ap-northeast-1.am
 kubectl expose deploy information --port=8080 -n team-rent
 
 # delivery
-kubectl create deploy delivery --image=496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-delivery:v1 -n team-rent
+kubectl create deploy delivery --image=496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-delivery2:v1 -n team-rent
 kubectl expose deploy delivery --port=8080 -n team-rent
 
 # gateway
