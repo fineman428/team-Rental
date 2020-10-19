@@ -142,7 +142,7 @@ helm install --name my-kafka --namespace kafka incubator/kafka
 # rental 
 # 올린 이미지를 통해 container 생성
 kubectl create deploy rental --image=496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-rental:v1 -n team-rent
-kubectl expose deploy rental --type=LoadBalancer --port=8080 -n team-rent
+kubectl expose deploy rental --port=8080 -n team-rent
 
 # product 
 kubectl create deploy product --image=496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-product:v1 -n team-rent
