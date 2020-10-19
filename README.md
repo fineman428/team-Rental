@@ -26,3 +26,10 @@ sudo ./aws/install
 pip3 install --upgrade --user awscli
 
 
+ - aws configure
+   . Access key id : AKIAXHDEFLPIUU5LZBXC
+   . Secret Access key : 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
+   . region name : ap-northeast-2
+   . out put format json
+
+
