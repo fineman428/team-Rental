@@ -178,4 +178,6 @@ http http://Information:8080
 http http://gateway:8080
 
 http: error: ConnectionError: HTTPConnectionPool(host='product', port=8080): Max retries exceeded with url: / (Caused by NewConnectionError('<requests.packages.urllib3.connection.HTTPConnection object at 0x7fee7aa192d0>: Failed to establish a new connection: [Errno -2] Name or service not known',)) while doing GET request to URL: http://product:8080/
-root@labs-1997046989:~# http http://Product:8081
+
+
+
