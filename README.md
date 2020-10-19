@@ -136,6 +136,10 @@ helm repo update
 - namespace
 helm install --name my-kafka --namespace kafka incubator/kafka
 
+# kafka 토픽 생성
+kubectl -n kafka exec my-kafka-0 -- /usr/bin/kafka-topics --zookeeper my-kafka-zookeeper:2181 --topic rentalService --create --partitions 1 --replication-factor 1
+# kafka 토픽 리스트 확인 
+kubectl -n kafka exec my-kafka-0 -- /usr/bin/kafka-topics --zookeeper my-kafka-zookeeper:2181 --list
 
 
 ## 팀 과제 k8s deploy 띄우기 (no yaml )
