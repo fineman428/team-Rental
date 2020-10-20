@@ -395,9 +395,9 @@ http://a6d06cd19065441e2a03edad0e6d3c15-1954250921.ap-northeast-1.elb.amazonaws.
 
 
 
-=======================
+========================================================================
 ### 성능 부하 준비
-=======================
+========================================================================
 부하테스트 툴(Siege) 설치 및 Order 서비스 Load Testing 
 # 설치
 kubectl run siege --image=apexacme/siege-nginx -n team-rent 
@@ -411,16 +411,55 @@ pod/siege-5c7c46b788-lbkqb
 kubectl exec -it pod/siege-5c7c46b788-lbkqb -c siege -n team-rent -- /bin/bash
   .. siege 접속
 
+
+========================================================================
+무정지 재배포
+========================================================================
+
+# ECR 신규 이미지 버전 생성
+docker build -t 496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-product:v2 .
+
+docker login --username AWS -p $(aws ecr get-login-password --region ap-northeast-1) 496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-product
+
+docker push 496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-product:v2
+
+
+# 부하발생
+siege -c5 -t20S -v --content-type "application/json" 'http://order:8080/orders POST {"productId": "1001", "qty":5}'
 siege -c30 -t20S -v --content-type "application/json" 'http://order:8080/orders POST {"productId": "1001", "qty":5}'
-Order 서비스에 설정된 Timeout을 임계치를 초과하는 순간, Istio에서 서비스로의 연결을 자동 ?단하는 것을 확인
+
+siege -c30 -t120S -v --content-type "application/json" 'http://a50c56c30cabd4893a598b74e8529ec7-30210382.ap-northeast-1.elb.amazonaws.com:8080/products POST {"name": "Computer", "qty":9}'
 
 
-VirtualService 인풋되는 정책 부여 가능 
+## Roll out 새로운 버전 출시
+- image 버전 업데이트 후 주석 추가  
+
+# replicas 속성 변경 
+nano deployment.yaml ( spec 아래 항목에 replicas: 5 속성 추가; 있으면 수정 )
+kubectl apply -f deployment.yml -n team-rent
+
+# image update : kubectl set image deploy nginx-deployment nginx=nginx:1.9.1
+kubectl set image deploy product product=496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-product:v1 -n team-rent
+kubectl set image deploy product product=496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-product:v2 -n team-rent
+ - product= ... 에서 product 명은 deployment.yml 의 containers 의 name
+
+# annotation : kubectl annotate deploy nginx-deployment kubernetes.io/change-cause='v2 is revisioned nginx:1.9.1'
+kubectl annotate deploy product kubernetes.io/change-cause='v1 is revisioned product' -n team-rent
+kubectl annotate deploy product kubernetes.io/change-cause='v2 is revisioned product' -n team-rent
+
+# 변경 확인 
+kubectl rollout history deploy deployment.apps/product -n team-rent
 
 
-=======================
+
+## Rollout - undo (Rollback)
+  - Roll back 변경 이전 버전 복귀   
+    . kubectl rollout undo deploy product -n team-rent
+
+
+========================================================================
 Lab. Timeout : Fail-Fast를 통한 Gateway, 또는 서비스 Caller 자원 보호
-=======================
+========================================================================
 
 
 Timeout 테스트를 위해 CNA 과정에서 구현한 Order 마이크로서비스의  코드 보완 및 tutorial 네임스페이스에 배포
@@ -606,39 +645,7 @@ jaeger
  
  
  
- ========================================================================
-무정지 재배포
-========================================================================
-
-# 부하발생
-siege -c5 -t20S -v --content-type "application/json" 'http://order:8080/orders POST {"productId": "1001", "qty":5}'
-siege -c30 -t20S -v --content-type "application/json" 'http://order:8080/orders POST {"productId": "1001", "qty":5}'
-
-siege -c30 -t120S -v --content-type "application/json" 'http://a50c56c30cabd4893a598b74e8529ec7-30210382.ap-northeast-1.elb.amazonaws.com:8080/products POST {"name": "Computer", "qty":9}'
-
-
-## Roll out 새로운 버전 출시
-- image 버전 업데이트 후 주석 추가  
-
-# replicas 속성 변경 
-nano deployment.yaml ( spec 아래 항목에 replicas: 5 속성 추가; 있으면 수정 )
-kubectl apply -f deployment.yaml 
-
-# image update :  
-kubectl set image deploy nginx-deployment nginx=nginx:1.9.1
-kubectl set image deploy product 496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-product:v1
-  . kubectl get all deploy 이름 확인 
-# annotation :  
-kubectl annotate deploy nginx-deployment kubernetes.io/change-cause='v2 is revisioned nginx:1.9.1'
-kubectl annotate deploy product kubernetes.io/change-cause='v2 is revisioned product'
-# 변경 확인 
-kubectl rollout history deploy product
-
-
-
-## Rollout - undo (Rollback)
-  - Roll back 변경 이전 버전 복귀   
-    . kubectl rollout undo deploy nginx-deployment
+ 
 
  
 
