@@ -400,15 +400,15 @@ http://a6d06cd19065441e2a03edad0e6d3c15-1954250921.ap-northeast-1.elb.amazonaws.
 =======================
 부하테스트 툴(Siege) 설치 및 Order 서비스 Load Testing 
 # 설치
-kubectl run siege --image=apexacme/siege-nginx -n tutorial 
+kubectl run siege --image=apexacme/siege-nginx -n team-rent 
 
 # siege pod id 확인 
-kubectl get all -n tutorial
-pod/siege-5c7c46b788-nrxwb
+kubectl get all -n team-rent 
+pod/siege-5c7c46b788-lbkqb
 
-# siege 실행접속
-가이드 kubectl exec -it siege -c siege -n tutorial -- /bin/bash
-kubectl exec -it pod/siege-5c7c46b788-nrxwb -c siege -n tutorial -- /bin/bash
+# siege 실행접속가이드 
+==> 교육자료 : kubectl exec -it siege -c siege -n team-rent -- /bin/bash
+kubectl exec -it pod/siege-5c7c46b788-lbkqb -c siege -n team-rent -- /bin/bash
   .. siege 접속
 
 siege -c30 -t20S -v --content-type "application/json" 'http://order:8080/orders POST {"productId": "1001", "qty":5}'
@@ -450,14 +450,14 @@ kubernetest
 vi deployment.yml
 
 # 기존꺼 삭제 
-kubectl delete deploy order -n tutorial
+kubectl delete deploy order -n team-rent
 # deploy 생성
-kubectl create deploy order --image=271153858532.dkr.ecr.ap-southeast-2.amazonaws.com/admin11-cna-order:v2 -n tutorial
+kubectl create deploy order --image=271153858532.dkr.ecr.ap-southeast-2.amazonaws.com/admin11-cna-order:v2 -n team-rent
 # 이미지 정상적으로 올라갔는지 확인 
 kubectl get deploy -o wide -n tutorial
 
 ## siege 접속
-kubectl exec -it pod/siege-5c7c46b788-nrxwb -c siege -n tutorial -- /bin/bash
+kubectl exec -it pod/siege-5c7c46b788-nrxwb -c siege -n team-rent -- /bin/bash
 
 --------------------------------
 	    
@@ -614,7 +614,7 @@ jaeger
 siege -c5 -t20S -v --content-type "application/json" 'http://order:8080/orders POST {"productId": "1001", "qty":5}'
 siege -c30 -t20S -v --content-type "application/json" 'http://order:8080/orders POST {"productId": "1001", "qty":5}'
 
-siege -c30 -t20S -v --content-type "application/json" 'http a272043ee71fc482b9194feda4af0471-1504398459.ap-northeast-1.elb.amazonaws.com:8080/products POST {"name": "Computer", "qty":9}'
+siege -c30 -t120S -v --content-type "application/json" 'http://a50c56c30cabd4893a598b74e8529ec7-30210382.ap-northeast-1.elb.amazonaws.com:8080/products POST {"name": "Computer", "qty":9}'
 
 
 ## Roll out 새로운 버전 출시
