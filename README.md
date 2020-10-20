@@ -372,6 +372,10 @@ kubectl create -f team-Information/kubernetes/service.yaml -n team-rent
 kubectl apply -f <(istioctl kube-inject -f team-Product/kubernetes/deployment.yml) -n team-rent
 kubectl create -f team-Product/kubernetes/service.yaml -n team-rent
 
+istioctl 에서 오류 발생 시
+cd istio-1.7.1
+export PATH=$PWD/bin:$PATH
+
 kubectl get all -n team-rent
 kubectl get all -n istio-system
 
