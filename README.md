@@ -1,3 +1,5 @@
+팀 프로젝트 진행 가이드 (from 정석희 수석)
+
 Applicatoin 구현
 
 lombok 
