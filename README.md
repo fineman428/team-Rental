@@ -603,5 +603,38 @@ jaeger
  동일한 시간대에 4번 error 발생 내역 확인
  총 3번 retry 설정되어 있음
  최초 실행1회   + retry 3회 = 4회 
+ 
+ 
+ 
+ ========================================================================
+무정지 재배포
+========================================================================
+
+# 부하발생
+siege -c5 -t20S -v --content-type "application/json" 'http://order:8080/orders POST {"productId": "1001", "qty":5}'
+siege -c30 -t20S -v --content-type "application/json" 'http://order:8080/orders POST {"productId": "1001", "qty":5}'
+
+siege -c30 -t20S -v --content-type "application/json" 'http a272043ee71fc482b9194feda4af0471-1504398459.ap-northeast-1.elb.amazonaws.com:8080/products POST {"name": "Computer", "qty":9}'
+
+
+## Roll out 새로운 버전 출시
+- image 버전 업데이트 후 주석 추가  
+# image update :  
+kubectl set image deploy nginx-deployment nginx=nginx:1.9.1
+kubectl set image deploy product 496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-product:v1
+# annotation :  
+kubectl annotate deploy nginx-deployment kubernetes.io/change-cause='v2 is revisioned nginx:1.9.1'
+kubectl annotate deploy product kubernetes.io/change-cause='v2 is revisioned product'
+# 변경 확인 
+kubectl rollout history deploy product
+
+
+
+
+## Rollout - undo (Rollback)
+  - Roll back 변경 이전 버전 복귀   
+    . kubectl rollout undo deploy nginx-deployment
+
+ 
 
 
