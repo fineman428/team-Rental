@@ -497,7 +497,7 @@ Service time delay를 위해, Order Aggregate(Order.java)에 저장전 Thread.sl
 	    }
 	    
 	    수정후 cna-oder
-	    mvn pa
+	    mvn package
 	    
 부하를 만들기 위해 수정
 변경된 소스 반영
@@ -520,6 +520,11 @@ kubectl get deploy -o wide -n tutorial
 kubectl exec -it pod/siege-5c7c46b788-nrxwb -c siege -n team-rent -- /bin/bash
 
 --------------------------------
+
+[error] A temporary resolution error for a50c56c30cabd4893a598b74e8529ec7-30210382.ap-northeast-1.elb.amazonaws.com
+: Resource temporarily unavailable
+
+---------------------------------
 	    
 	    
 Docker image Build & Push
