@@ -334,6 +334,16 @@ kubectl edit svc tracing -n istio-system
 
 
 
+# 수정 후 접속 정보 확인 
+kubectl get svc -n istio-system
+
+
+분산추적 시스템(Jaeger) 접속 : EXTERNAL-IP :16686
+http://a4e4220a7e3194a5ca7d3076e149d5e4-864448346.ap-southeast-2.elb.amazonaws.com:16686
+
+모니터링 시스템(Kiali) 접속 : EXTERNAL-IP:20001 (admin/admin)
+http://a2570d1d818de400eb09e465c3ff7dbb-667544701.ap-southeast-2.elb.amazonaws.com:20001
+http://a2570d1d818de400eb09e465c3ff7dbb-667544701.ap-southeast-2.elb.amazonaws.com:20001/kiali/
 
 
 
