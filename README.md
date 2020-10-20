@@ -296,7 +296,7 @@ http DELETE a272043ee71fc482b9194feda4af0471-1504398459.ap-northeast-1.elb.amazo
 http a272043ee71fc482b9194feda4af0471-1504398459.ap-northeast-1.elb.amazonaws.com:8080/deliveries
 
 
-
+=========================================================================================================
 ### Liveness Probes 테스트 
 deployment.yaml 파일 
 
@@ -307,6 +307,10 @@ deployment.yaml 파일
             initialDelaySeconds: 120
 
 kubelet 이 서비스 이상 감지후 POD 재생성 과정 확인
+터미널 추가 후
+watch kubectl get all -n team-rent
+
+
 
 =========================================================================================================
 ### Istio 설치
