@@ -308,6 +308,37 @@ deployment.yaml 파일
 
 kubelet 이 서비스 이상 감지후 POD 재생성 과정 확인
 
+
+### Istio 설치
+경로 : home/project
+
+kubectl version ==> 16 이상이어야 Istio 설치 가능 (클래스터 생성 시 버전 입력하는 구문 있음.)
+
+curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.7.1 TARGET_ARCH=x86_64 sh -
+cd istio-1.7.1
+export PATH=$PWD/bin:$PATH
+istioctl install --set profile=demo
+
+kubectl apply -f samples/addons
+
+--모니터링 설정 변경
+--Monitoring Server - Kiali : 기본 ServiceType 변경 : ClusterIP를 LoadBalancer 로..
+kubectl edit svc kiali -n istio-system
+:%s/ClusterIP/LoadBalancer/g
+:wq!
+
+--Tracing Server - Jaeger : 기본 ServiceType 변경 : ClusterIP를 LoadBalancer 로..
+kubectl edit svc tracing -n istio-system
+:%s/ClusterIP/LoadBalancer/g
+:wq!
+
+
+
+
+
+
+
+
 =======================
 ### 성능 부하 준비
 =======================
