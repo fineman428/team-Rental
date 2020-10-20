@@ -619,15 +619,20 @@ siege -c30 -t120S -v --content-type "application/json" 'http://a50c56c30cabd4893
 
 ## Roll out 새로운 버전 출시
 - image 버전 업데이트 후 주석 추가  
+
+# replicas 속성 변경 
+nano deployment.yaml ( spec 아래 항목에 replicas: 5 속성 추가; 있으면 수정 )
+kubectl apply -f deployment.yaml 
+
 # image update :  
 kubectl set image deploy nginx-deployment nginx=nginx:1.9.1
 kubectl set image deploy product 496278789073.dkr.ecr.ap-northeast-1.amazonaws.com/skccuser02-product:v1
+  . kubectl get all deploy 이름 확인 
 # annotation :  
 kubectl annotate deploy nginx-deployment kubernetes.io/change-cause='v2 is revisioned nginx:1.9.1'
 kubectl annotate deploy product kubernetes.io/change-cause='v2 is revisioned product'
 # 변경 확인 
 kubectl rollout history deploy product
-
 
 
 
