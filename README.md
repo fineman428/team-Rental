@@ -293,3 +293,226 @@ http DELETE a272043ee71fc482b9194feda4af0471-1504398459.ap-northeast-1.elb.amazo
 
 http a272043ee71fc482b9194feda4af0471-1504398459.ap-northeast-1.elb.amazonaws.com:8080/deliveries
 
+
+
+### Liveness Probes 테스트 
+deployment.yaml 파일 
+
+ livenessProbe:
+            httpGet:
+              path: '/rentals' -> 비정상적인 URL로 수정 
+              port: 8080
+            initialDelaySeconds: 120
+
+kubelet 이 서비스 이상 감지후 POD 재생성 과정 확인
+
+=======================
+### 성능 부하 준비
+=======================
+부하테스트 툴(Siege) 설치 및 Order 서비스 Load Testing 
+# 설치
+kubectl run siege --image=apexacme/siege-nginx -n tutorial 
+
+# siege pod id 확인 
+kubectl get all -n tutorial
+pod/siege-5c7c46b788-nrxwb
+
+# siege 실행접속
+가이드 kubectl exec -it siege -c siege -n tutorial -- /bin/bash
+kubectl exec -it pod/siege-5c7c46b788-nrxwb -c siege -n tutorial -- /bin/bash
+  .. siege 접속
+
+siege -c30 -t20S -v --content-type "application/json" 'http://order:8080/orders POST {"productId": "1001", "qty":5}'
+Order 서비스에 설정된 Timeout을 임계치를 초과하는 순간, Istio에서 서비스로의 연결을 자동 ?단하는 것을 확인
+
+
+VirtualService 인풋되는 정책 부여 가능 
+
+
+=======================
+Lab. Timeout : Fail-Fast를 통한 Gateway, 또는 서비스 Caller 자원 보호
+=======================
+
+
+Timeout 테스트를 위해 CNA 과정에서 구현한 Order 마이크로서비스의  코드 보완 및 tutorial 네임스페이스에 배포
+Service time delay를 위해, Order Aggregate(Order.java)에 저장전 Thread.sleep 코드 삽입
+
+---------------------------
+	    @PrePersist
+	    public void onPrePersist(){  
+	        try {
+	            Thread.currentThread().sleep((long) (800 + Math.random() * 220));
+	        } catch (InterruptedException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    
+	    수정후 cna-oder
+	    mvn pa
+	    
+부하를 만들기 위해 수정
+변경된 소스 반영
+mvn package
+docker build -t 271153858532.dkr.ecr.ap-southeast-2.amazonaws.com/admin11-cna-order:v2 .
+docker push 271153858532.dkr.ecr.ap-southeast-2.amazonaws.com/admin11-cna-order:v2
+
+kubernetest
+
+vi deployment.yml
+
+# 기존꺼 삭제 
+kubectl delete deploy order -n tutorial
+# deploy 생성
+kubectl create deploy order --image=271153858532.dkr.ecr.ap-southeast-2.amazonaws.com/admin11-cna-order:v2 -n tutorial
+# 이미지 정상적으로 올라갔는지 확인 
+kubectl get deploy -o wide -n tutorial
+
+## siege 접속
+kubectl exec -it pod/siege-5c7c46b788-nrxwb -c siege -n tutorial -- /bin/bash
+
+--------------------------------
+	    
+	    
+Docker image Build & Push
+tutorial 네임스페이스에 Order v2 서비스 재배포  
+kubectl apply -f - <<EOF
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order
+  namespace: tutorial
+  labels:
+    app: order
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order
+  template:
+    metadata:
+      labels:
+        app: order
+    spec:
+      containers:
+        - name: order
+          image: IMAGE_FULL_REPOSITORY_URL/order:v2
+          ports:
+            - containerPort: 8080
+          resources:
+            limits:
+              cpu: 500m
+            requests:
+              cpu: 200m
+EOF
+Order 서비스 생성
+kubectl expose deploy order --port=8080 -n tutorial
+Order 서비스 Timeout 설정 (Istio Gateway에서 Order 서비스로 라우팅 시) 
+(pwd 로 현 위치가 /istio-tutorial/ 인지 확인)
+nano customer/kubernetes/Gateway.yaml 오픈 후 마지막 행 다음에 타임아웃 설정이 포함된 아래 내용 추가
+  - match:
+    - uri:
+        prefix: /orders
+    route:
+    - destination:
+        host: order
+        port:
+          number: 8080
+    timeout: 3s
+(변경 내용 적용)
+kubectl apply -f customer/kubernetes/Gateway.yml -n tutorial
+
+## Order 서비스 Timeout 설정 (클라우드 내에서 Order 서비스로 라우팅시)
+-----------------------------
+kubectl apply -f - <<EOF
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: vs-order-network-rule
+  namespace: tutorial
+spec:
+  hosts:
+  - order
+  http:
+  - route:
+    - destination:
+        host: order
+    timeout: 3s
+EOF
+
+붙여넣고 enter
+-----------------------------
+
+# 부하테스트 툴(Siege) 설치 및 Order 서비스 Load Testing 
+# siege 싱행
+kubectl run siege --image=apexacme/siege-nginx -n tutorial 
+# siege 접속
+kubectl exec -it siege -c siege -n tutorial -- /bin/bash
+ . kubectl get all -n tutorial
+ . siege 를 siege pod id로 수정 
+   .. pod/siege-5c7c46b788-nrxwb
+
+# 부하발생
+siege -c5 -t20S -v --content-type "application/json" 'http://order:8080/orders POST {"productId": "1001", "qty":5}'
+siege -c30 -t20S -v --content-type "application/json" 'http://order:8080/orders POST {"productId": "1001", "qty":5}'
+
+# 파이널에서도 관련결과 리포트 필요
+Order 서비스에 설정된 Timeout을 임계치를 초과하는 순간, Istio에서 서비스로의 연결을 자동 차단하는 것을 확인
+. 부하발생 서킷 브레이크 
+  붉은색으로 결과 출력 
+
+
+=======================
+###Lab. Retry : 
+5xx 오류를 리턴받게 되면, Envoy Proxy에서 설정한 횟수만큼 대상 서비스를 재호출하여 일시적인 장애였는지를 다시 확인하는 Rule 
+=======================
+
+# 동기 호출은 
+
+
+Order 서비스에 Retry Rule 추가 적용
+------------------------------------------------------------------
+
+kubectl apply -f - <<EOF
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: vs-order-network-rule
+  namespace: tutorial
+spec:
+  hosts:
+  - order
+  http:
+  - route:
+    - destination:
+        host: order
+    timeout: 3s
+    retries:
+      attempts: 3
+      perTryTimeout: 2s
+      retryOn: 5xx,retriable-4xx,gateway-error,connect-failure,refused-stream
+EOF
+
+. 
+------------------------------------------------------------------
+
+# Delivery 서비스를 정지하고, 이를 동기호출하는 Order 서비스 API 호출
+kubectl scale deploy delivery --replicas=0 -n tutorial
+ . replicas 0 으로 조정시 node service 가 모두 사라짐
+
+kubectl exec -it siege -c siege -n tutorial -- /bin/bash
+kubectl exec -it pod/siege-5c7c46b788-nrxwb -c siege -n tutorial -- /bin/bash
+
+# 테스트 
+http http://order:8080/orders/ productId=1001 qty=5
+http DELETE http://order:8080/orders/1 
+ . 삭제시 delivery 동기 호출
+ . delivery 가 off 상태
+ . 500 에러 발생
+ 
+# retry 기록 확인 
+jaeger
+ 동일한 시간대에 4번 error 발생 내역 확인
+ 총 3번 retry 설정되어 있음
+ 최초 실행1회   + retry 3회 = 4회 
+
+
