@@ -455,6 +455,24 @@ kubectl rollout history deploy deployment.apps/product -n team-rent
 ## Rollout - undo (Rollback)
   - Roll back 변경 이전 버전 복귀   
     . kubectl rollout undo deploy product -n team-rent
+    
+    
+    
+
+========================================================================
+HPA  (오토스케일 아웃)
+========================================================================
+
+• 결제서비스에 대한 replica 를 동적으로 늘려주도록 HPA 를 설정한다. 설정은 CPU 사용량이 15프로를 넘어서면 replica 를 10개까지 늘려준다:
+kubectl autoscale deploy product --min=1 --max=10 --cpu-percent=10 -n team-rent
+
+• CB 에서 했던 방식대로 워크로드를 2분 동안 걸어준다.
+siege -c30 -t120S -v --content-type "application/json" 'http://a50c56c30cabd4893a598b74e8529ec7-30210382.ap-northeast-1.elb.amazonaws.com:8080/products POST {"name": "Computer", "qty":9}'
+
+• 오토스케일이 어떻게 되고 있는지 모니터링을 걸어둔다:
+kubectl get deploy product -w -n team-rent
+watch kubectl get deploy product -w -n team-rent
+어느정도 시간이 흐른 후 (약 30초) 스케일 아웃이 벌어지는 것을 확인할 수 있다:
 
 
 ========================================================================
