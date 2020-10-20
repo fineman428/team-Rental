@@ -308,7 +308,7 @@ deployment.yaml 파일
 
 kubelet 이 서비스 이상 감지후 POD 재생성 과정 확인
 
-
+=========================================================================================================
 ### Istio 설치
 경로 : home/project
 
@@ -332,18 +332,60 @@ kubectl edit svc tracing -n istio-system
 :%s/ClusterIP/LoadBalancer/g
 :wq!
 
+### deployment.yml 수정
+template:
+    metadata:
+      labels:
+        app: /* 서비스명 */
+        version: v1
+      annotations:
+        sidecar.istio.io/inject: "true"
+
+### 기존서비스 종료
+kubectl delete deploy rental -n team-rent
+kubectl delete service rental -n team-rent
+
+kubectl delete deploy product -n team-rent
+kubectl delete service product -n team-rent
+
+kubectl delete deploy information -n team-rent
+kubectl delete service information -n team-rent
+
+kubectl delete deploy delivery -n team-rent
+kubectl delete service delivery -n team-rent
+
+### istio 사이드카 주입 및 yml 파일로 배포
+경로 : /project# 
+kubectl apply -f <(istioctl kube-inject -f team-Delivery/kubernetes/deployment.yml) -n team-rent
+kubectl create -f team-Delivery/kubernetes/service.yaml -n team-rent
+
+kubectl apply -f <(istioctl kube-inject -f team-Rental/kubernetes/deployment.yml) -n team-rent
+kubectl create -f team-Rental/kubernetes/service.yaml -n team-rent
+
+kubectl apply -f <(istioctl kube-inject -f team-Information/kubernetes/deployment.yml) -n team-rent
+kubectl create -f team-Information/kubernetes/service.yaml -n team-rent
+
+kubectl apply -f <(istioctl kube-inject -f team-Product/kubernetes/deployment.yml) -n team-rent
+kubectl create -f team-Product/kubernetes/service.yaml -n team-rent
+
+kubectl get all -n team-rent
+kubectl get all -n istio-system
 
 
-# 수정 후 접속 정보 확인 
-kubectl get svc -n istio-system
+### 수정 후 접속 정보 확인
+kubectl get svc -n istio-system 했을 때 LoadBalancer 서비스 확인
+
+LoadBalancer 서비스
+kiali
+tracing (=Jaeger)
 
 
-분산추적 시스템(Jaeger) 접속 : EXTERNAL-IP :16686
-http://a4e4220a7e3194a5ca7d3076e149d5e4-864448346.ap-southeast-2.elb.amazonaws.com:16686
+분산추적 시스템(Jaeger) 접속 : EXTERNAL-IP :80
+http://ab73914550f014fa89557b90712ca5d8-1464908327.ap-northeast-1.elb.amazonaws.com/
 
 모니터링 시스템(Kiali) 접속 : EXTERNAL-IP:20001 (admin/admin)
-http://a2570d1d818de400eb09e465c3ff7dbb-667544701.ap-southeast-2.elb.amazonaws.com:20001
-http://a2570d1d818de400eb09e465c3ff7dbb-667544701.ap-southeast-2.elb.amazonaws.com:20001/kiali/
+http://a6d06cd19065441e2a03edad0e6d3c15-1954250921.ap-northeast-1.elb.amazonaws.com:20001/
+
 
 
 
