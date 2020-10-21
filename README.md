@@ -10,6 +10,12 @@ Settings -> Compiler -> Annotation Processors -> Enable annotation processing
 메이븐 소스 다운로드
 
 
+# 리모트 git repository 새로 생성
+git remote remove origin
+git remote add origin https://github.com/fineman428/team-Rental.git
+git pull origin master
+
+
 # team-Rental
 
 # ubuntu update
