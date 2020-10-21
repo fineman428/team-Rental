@@ -510,7 +510,9 @@ hystrix:
 siege -c30 -t120S -v --content-type "application/json" 'http://a50c56c30cabd4893a598b74e8529ec7-30210382.ap-northeast-1.elb.amazonaws.com:8080/products POST {"name": "Computer", "qty":9}'
 
 
-
+## 서킷 브레이크 테스트 
+   - HTTP 호툴 URL을 Loadbalance 를 통해 노출된 URL로 진행하는 경우 , AWS에서 DDOS 공격으로 판단하여 차단 메시지 발생
+   - siege 내에서는 pod URL 주소 직접 호출이 가능하여 Product 로 호출 가능 
 
  
  
